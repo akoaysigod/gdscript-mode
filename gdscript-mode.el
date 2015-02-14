@@ -23,7 +23,7 @@
 ;;                                        font-lock-keyword-face t)))))
 
 (define-derived-mode gdscript-mode python-mode "GDScript"
-  (font-lock-add-keywords nil '("\\<\\(const\\|func\\|var\\)\\>" 1 font-lock-keyword-face)))
+  (font-lock-add-keywords nil '("\\<\\(const\\|func\\|var\\)\\>")))
   ;; (setq-local comment-start "#")
   ;; (setq-local font-lock-defaults '(gdscript-font-lock)))
 
