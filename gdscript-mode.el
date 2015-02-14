@@ -3,19 +3,24 @@
 ;;   :group 'gdscript-mode)
 
 
-(defvar gdscript-keywords
-  '("def" "var" "const" "return" "for" "if" "else" "elif"))
+;; (defvar gdscript-keywords
+;;   '("def" "var" "const" "return" "for" "if" "else" "elif"))
 
-(defvar gdscript-keywords-regexp
-  (mapconcat 'identity gdscript-keywords "\\|"))
+;; (defvar gdscript-keywords-regexp
+;;   (mapconcat 'identity gdscript-keywords "\\|"))
 
-(defvar gdscript-font-lock
-  `((,gdscript-keywords-regexp 1 font-lock-keyword-face)
-    ;;more stuff
-    ))
+;; (defvar gdscript-font-lock
+;;   `((,gdscript-keywords-regexp 1 font-lock-keyword-face)
+;;     ;;more stuff
+;;     ))
 
-(defvar gdscript-mode-syntax-table
-  (let ((st (make-syntax-table)))))
+;; (defvar gdscript-mode-syntax-table
+;;   (let ((st (make-syntax-table)))))
+(add-hook 'python-mode-hook
+          (lambda ()
+            (font-lock-add-keywords nil
+                                    '(("\\<\\(extends\\)" 1
+                                       font-lock-keyword-face t)))))
 
 (define-derived-mode gdscript-mode python-mode "GDScript")
   ;; (setq-local comment-start "#")
