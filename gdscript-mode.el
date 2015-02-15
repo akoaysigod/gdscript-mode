@@ -1,3 +1,7 @@
+(defvar gdscript-mode-map
+  (let ((map (make-keymap)))
+    (define-key map [remap newline-and-indent] 'gdscript-newline-and-indent)))
+
 (defvar gdscript-builtin-words
   '("Vector2" "Rect2" "Vector3" "Matrix32" "Plane" "Quat" "AABB" "Matrix3" "Transform"))
 
@@ -18,6 +22,16 @@
   
 
   )
+
+;;this is from python mode and does not work here right now 
+(defun gdscript-newline-and-indent ()
+  (interactive)
+  (let ((ci (current-indentation)))
+    (if (< ci (current-column))		
+	(newline-and-indent)
+      (beginning-of-line)
+      (insert-char ?\n 1)
+      (move-to-column ci))))
 
 (define-derived-mode gdscript-mode fundamental-mode "GDScript"
   (setq-local indent-line-function 'gdscript-indent-line)
