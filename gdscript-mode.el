@@ -1,26 +1,17 @@
-;; (defcustom GDScript-indent-offset 4
-;;   :type 'integer
-;;   :group 'gdscript-mode)
+(defvar gdscript-builtin-words
+  '("Vector2" "Rect2" "Vector3" "Matrix32" "Plane" "Quat" "AABB" "Matrix3" "Transform"))
 
+(defvar gdscript-keywords
+  '("func" "const" "var" "if" "else" "elif" "for" "while" "return" "class" "extends"))
 
-;; (defvar gdscript-keywords
-;;   '("func" "var" "const" "return" "for" "if" "else" "elif"))
+(defun regex-maker (words)
+  (regexp-opt words 'symbols))
 
-;; (defvar gdscript-keywords-regexp
-;;   (mapconcat 'identity gdscript-keywords "\\|"))
-
-;; (defvar gdscript-font-lock
-;;   `((,gdscript-keywords-regexp 1 font-lock-keyword-face)
-;;     ;;more stuff
-;;     ))
-
-;; (defvar gdscript-mode-syntax-table
-;;   (let ((st (make-syntax-table)))))
-;; (add-hook 'python-mode-hook
-;;           (lambda ()
-;;             (font-lock-add-keywords nil
-;;                                     '(("\\|const\\|var" 1
-;;                                        font-lock-keyword-face t)))))
+(defvar gdscript-font-lock
+  `((,(regex-maker gdscript-keywords-regex) 1 font-lock-keyword-face)
+    (,(regex-maker gdscript-builtin-regex) 1 font-lock-type-face)
+    ))
+(print gdscript-font-lock)
 
 (defun gdscript-indent-line ()
   (interactive)
@@ -28,13 +19,10 @@
 
   )
 
-
 (define-derived-mode gdscript-mode fundamental-mode "GDScript"
   (setq-local indent-line-function 'gdscript-indent-line)
-  (font-lock-add-keywords nil '("\\<\\(const\\|func\\|var\\)\\>")))
-  ;; (setq-local comment-start "#")
-  ;; (setq-local font-lock-defaults '(gdscript-font-lock)))
+  (setq-local font-lock-defaults '(gdscript-font-lock)))
 
-(provide 'gdscript-mode)
+ (provide 'gdscript-mode)
 
 (add-to-list 'auto-mode-alist '("\\.gd\\'" . gdscript-mode))
