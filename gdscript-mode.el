@@ -41,24 +41,13 @@
         (char-equal ?\: char-eol)))
       ))
 
-;;this is from python mode and does not work here right now 
 (defun gdscript-newline-and-indent ()
   (interactive)
-  (newline)
-  (if (gdscript-should-indent)
-      (insert-char ?  (+ (current-indentation) gdtab))
-    (insert-char ?  (current-indentation)))
-  ;; (when (< (current-column) (current-indentation))
-  ;;   (move-to-column (current-indentation))
-  ;;   (delete-horizontal-space t)
-  ;;   (newline))
-
-  ;; (if (gdscript-should-indent)
-  ;;     (insert-char ?  (+ (current-indentation) gdtab))
-  ;;   (insert-char ?  (current-indentation))
-  ;; )
-  )
-
+  (let ((ci (current-indentation)))
+    (newline)
+    (if (gdscript-should-indent)
+        (insert-char ?  (+ ci gdtab))
+      (insert-char ?  ci)))
 
 (define-derived-mode gdscript-mode fundamental-mode "GDScript"
   (setq-local indent-line-function 'gdscript-indent-line)
