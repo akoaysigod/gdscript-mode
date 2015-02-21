@@ -18,10 +18,6 @@
     (,(regex-maker gdscript-builtin-words) 1 font-lock-type-face)
     ))
 
-(defun gdscript-indent-line ()
-  (interactive)
-  )
-
 (defun gdscript-should-indent ()
   (save-excursion
     (skip-chars-backward "\r\n\t ")
@@ -35,6 +31,25 @@
     (if (gdscript-should-indent)
         (insert-char ?  (+ ci gdtab))
       (insert-char ?  ci))))
+
+(defun test-move ()
+  (interactive)
+  (back-to-indentation))
+
+(defun gdscript-indent-left ()
+  (save-excursion
+    
+    )
+  )
+
+(defun gdscript-indent-line ()
+  (interactive)
+  (let ((ci (current-indentation)))
+    (if (gdscript-should-indent)
+        (insert-char ?  (+ ci gdtab))
+      (gdscript-indent-left))
+    )
+  )
 
 (define-derived-mode gdscript-mode fundamental-mode "GDScript"
   (setq-local indent-line-function 'gdscript-indent-line)
