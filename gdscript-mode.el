@@ -35,19 +35,16 @@
 ;;Indentation
 (defun gdscript-should-indent ()
   (save-excursion
-    (skip-chars-backward "\r\n\t ")
+    (skip-chars-backward "\r\n\t ");;maybe don't needs this
     (let ((char-eol (char-before (line-end-position))))
         (char-equal ?\: char-eol))))
 
 (defun gdscript-max-indent ()
   (save-excursion
+    (skip-chars-backward "\r\n\t ")
     (if (gdscript-should-indent)
-        (progn
-          (skip-chars-backward "\r\n\t ")
-          (+ (current-indentation) gdtab))
-    (progn
-      (skip-chars-backward "\r\n\t ")
-      (current-indentation)))))
+        (+ (current-indentation) gdscript-tab-width)
+      (current-indentation))))
 
 (defun gdscript-insert-tab (c)
   (if gdscript-tabs-mode
@@ -56,23 +53,42 @@
 
 (defun gdscript-newline-and-indent ()
   (interactive)
+  (delete-horizontal-space t)
   (newline)
   (gdscript-insert-tab (gdscript-max-indent)))
 
+(defun gdscript-indent-back (c)
+  (delete-horizontal-space)
+  (gdscript-insert-tab (- c gdscript-tab-width)))
+
+;there must be a nicer way to do this
+(defun is-blank-line? ()
+  (= (count-words (line-beginning-position) (line-end-position)) 0))
+
 (defun gdscript-indent-line ()
   (interactive)
-  (save-excursion
-    (let ((ci (current-indentation)))
-      (when (and (<= ci (gdscript-max-indent)) (> ci 0))
-        (back-to-indentation)
-        (delete-horizontal-space)
-        (gdscript-insert-tab (- ci gdtab))
-        )
-      (when (= ci 0)
-        (back-to-indentation)
-        (gdscript-insert-tab (gdscript-max-indent)))
-      )
-  ))
+  (let ((ci (current-indentation))
+        (co (current-column)))
+    (back-to-indentation)
+    (cond ((and (<= ci (gdscript-max-indent)) (> ci 0))
+           (if (is-blank-line?)
+               (gdscript-indent-back ci)
+             (progn
+               (move-to-column co)
+               (save-excursion
+                 (back-to-indentation)
+                 (gdscript-indent-back ci)))))
+          ((= ci 0)
+           (if (is-blank-line?)
+               (gdscript-insert-tab (gdscript-max-indent))
+             (progn
+               (move-to-column co)
+               (save-excursion
+                 (back-to-indentation)
+                 (gdscript-insert-tab (gdscript-max-indent))))))
+          )
+    ))
+  
 
 (define-derived-mode gdscript-mode fundamental-mode "GDScript"
   (setq-local indent-line-function 'gdscript-indent-line)
