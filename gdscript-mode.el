@@ -61,10 +61,12 @@
   (delete-horizontal-space)
   (gdscript-insert-tab (- c gdscript-tab-width)))
 
-;there must be a nicer way to do this
 (defun is-blank-line? ()
   (= (count-words (line-beginning-position) (line-end-position)) 0))
 
+;;I think I need a custom function to determine current indentation
+;;also need to find a better way to do this stuff as if it's a blank line it behaves strange
+;;when using save-excursion right now this looks really dumb
 (defun gdscript-indent-line ()
   (interactive)
   (let ((ci (current-indentation))
