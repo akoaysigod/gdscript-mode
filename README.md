@@ -2,6 +2,12 @@ This is a major mode for GDScript. It's incomplete but I need this so it'll be a
 
 As of right now it has basic syntax highlighting and a mostly working cycling indentation function.
 
+## Installation
+```lisp
+(add-to-list 'load-path "/path/to/gdscript-mode.el")
+(require 'gdscript-mode)
+```
+
 ## Customization
 Use spaces instead of tabs. This defaults to whatever you have it set to. The editor defaults to tabs and I haven't found a way to change it so if you use spaces setting this to true might be useful.
 ```lisp
