@@ -24,32 +24,37 @@
     (let ((char-eol (char-before (line-end-position))))
         (char-equal ?\: char-eol))))
 
+(defun gdscript-max-indent ()
+  (save-excursion
+    (if (gdscript-should-indent)
+        (progn
+          (skip-chars-backward "\r\n\t ")
+          (+ (current-indentation) gdtab))
+    (progn
+      (skip-chars-backward "\r\n\t ")
+      (current-indentation)
+      ))
+    ))
+
 (defun gdscript-newline-and-indent ()
   (interactive)
-  (let ((ci (current-indentation)))
-    (newline)
-    (if (gdscript-should-indent)
-        (insert-char ?  (+ ci gdtab))
-      (insert-char ?  ci))))
-
-(defun test-move ()
-  (interactive)
-  (back-to-indentation))
-
-(defun gdscript-indent-left ()
-  (save-excursion
-    
-    )
-  )
+  (newline)
+  (insert-char ?  (gdscript-max-indent)))
 
 (defun gdscript-indent-line ()
   (interactive)
-  (let ((ci (current-indentation)))
-    (if (gdscript-should-indent)
-        (insert-char ?  (+ ci gdtab))
-      (gdscript-indent-left))
-    )
-  )
+  (save-excursion
+    (let ((ci (current-indentation)))
+      (when (and (<= ci (gdscript-max-indent)) (> ci 0))
+        (back-to-indentation)
+        (delete-horizontal-space)
+        (insert-char ?  (- ci gdtab))
+        )
+      (when (= ci 0)
+        (back-to-indentation)
+        (insert-char ?  (gdscript-max-indent)))
+      )
+  ))
 
 (define-derived-mode gdscript-mode fundamental-mode "GDScript"
   (setq-local indent-line-function 'gdscript-indent-line)
