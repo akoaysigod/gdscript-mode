@@ -31,6 +31,13 @@
     (,(regex-maker gdscript-builtin-words) 1 font-lock-type-face)
     ))
 
+(defvar gdscript-syntax-table nil)
+(if gdscript-syntax-table
+    ()
+  (setq gdscript-syntax-table (make-syntax-table))
+  (modify-syntax-entry ?\# "\<" gdscript-syntax-table)
+  (modify-syntax-entry ?\n ">" gdscript-syntax-table))
+
 
 ;;Indentation
 (defun gdscript-should-indent ()
@@ -90,10 +97,13 @@
                  (gdscript-insert-tab (gdscript-max-indent))))))
           )
     ))
-  
+
 
 (define-derived-mode gdscript-mode fundamental-mode "GDScript"
   (setq-local indent-line-function 'gdscript-indent-line)
+  (setq-local comment-start "# ")
+  (setq-local comment-end "")
+  (set-syntax-table gdscript-syntax-table)
   (setq-local font-lock-defaults '(gdscript-font-lock)))
 
 (provide 'gdscript-mode)
