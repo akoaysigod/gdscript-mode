@@ -1,3 +1,5 @@
+;;; gdscript-mode.el --- Provide a major mode for GDScript.
+
 (defvar gdscript-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map [remap newline-and-indent] 'gdscript-newline-and-indent) map))
