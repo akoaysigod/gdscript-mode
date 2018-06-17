@@ -23,7 +23,16 @@
   '("Vector2" "Rect2" "Vector3" "Matrix32" "Plane" "Quat" "AABB" "Matrix3" "Transform"))
 
 (defvar gdscript-keywords
-  '("func" "const" "var" "if" "else" "elif" "for" "while" "return" "class" "extends"))
+  '("if" "elif" "else" "for" "do"
+    "while" "match" "switch" "case"
+    "break" "continue" "pass" "return"
+    "class" "extends" "is" "self"
+    "tool" "signal" "func" "static"
+    "const" "enum" "var" "onready"
+    "export" "setget" "breakpoint" "preload"
+    "yield" "assert" "remote" "master"
+    "slave" "sync" "PI" "TAU"
+    "INF" "NAN"))
 
 (defun regex-maker (words)
   (regexp-opt words 'symbols))
@@ -46,7 +55,7 @@
   (save-excursion
     (skip-chars-backward "\r\n\t ");;maybe don't needs this
     (let ((char-eol (char-before (line-end-position))))
-        (char-equal ?\: char-eol))))
+      (char-equal ?\: char-eol))))
 
 (defun gdscript-max-indent ()
   (save-excursion
