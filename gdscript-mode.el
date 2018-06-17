@@ -20,7 +20,7 @@
 
 ;;Syntax highlighting
 (defvar gdscript-builtin-words
-  '("Vector2" "Rect2" "Vector3" "Matrix32" "Plane" "Quat" "AABB" "Matrix3" "Transform"))
+  '("null" "bool" "int" "String" "float" "Vector2" "Rect2" "Vector3" "Matrix32" "Plane" "Quat" "AABB" "Matrix3" "Transform"))
 
 (defvar gdscript-keywords
   '("if" "elif" "else" "for" "do"
@@ -40,6 +40,10 @@
 (defvar gdscript-font-lock
   `((,(regex-maker gdscript-keywords) 1 font-lock-keyword-face)
     (,(regex-maker gdscript-builtin-words) 1 font-lock-type-face)
+    (,(rx symbol-start "func" (1+ space) (group (1+ (or word ?_))))
+     (1 font-lock-function-name-face))
+    (,(rx symbol-start (or "var" "const") (1+ space) (group (1+ (or word ?_))))
+     (1 font-lock-variable-name-face))
     ))
 
 (defvar gdscript-syntax-table nil)
