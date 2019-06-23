@@ -1,4 +1,6 @@
 ;;; gdscript-mode.el --- Provide a major mode for GDScript.
+;; URL: https://github.com/akoaysigod/gdscript-mode
+;; Version: 20190623-git
 
 (defvar gdscript-mode-map
   (let ((map (make-sparse-keymap)))
@@ -124,3 +126,5 @@
 (provide 'gdscript-mode)
 
 (add-to-list 'auto-mode-alist '("\\.gd\\'" . gdscript-mode))
+
+;;; gdscript-mode.el ends here
